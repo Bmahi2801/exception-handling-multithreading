@@ -1,107 +1,11 @@
-import java.util.*;
+About Library Management System with Exception Handling and Multithreading in JAVA
 
-class BookNotFoundException extends Exception {
-    public BookNotFoundException(String message) {
-        super(message);
-    }
-}
+The Library Management System is a console-based Java application designed to handle essential library functions such as issuing and returning books. This project focuses on implementing two key programming concepts: exception handling and multithreading. By integrating these features, the system ensures smooth and reliable operations even when multiple users access it concurrently.
 
-class Book {
-    int id;
-    String title;
-    boolean isIssued;
+Exception handling in this system plays a critical role in managing invalid operations. For example, if a user attempts to issue a book that does not exist in the library or tries to return a book that was never issued, the program raises custom exceptions with clear, user-friendly error messages. This approach not only improves the system’s robustness but also enhances the user experience by preventing unexpected crashes.
 
-    public Book(int id, String title) {
-        this.id = id;
-        this.title = title;
-        this.isIssued = false;
-    }
-}
+Multithreading is utilized to simulate a real-world environment where several users may perform library operations simultaneously. By using synchronized methods, the system ensures that shared resources such as the book inventory remain consistent and free from data conflicts even when accessed by multiple threads. This feature demonstrates how concurrency can be managed effectively in Java applications.
 
-class Library {
-    private final Map<Integer, Book> books = Collections.synchronizedMap(new HashMap<>());
+The project structure includes various classes: Book to represent book entities, BookNotFoundException for custom exceptions, Library to manage book operations with thread-safe methods, LibraryTask to handle multithreaded operations, and LibraryManagementSystem as the main class that coordinates the application’s execution.
 
-    public Library() {
-        books.put(1, new Book(1, "Java Programming"));
-        books.put(2, new Book(2, "Data Structures"));
-        books.put(3, new Book(3, "Operating Systems"));
-    }
-
-    public synchronized void issueBook(int bookId) throws BookNotFoundException {
-        Book book = books.get(bookId);
-        if (book == null) {
-            throw new BookNotFoundException("Book with ID " + bookId + " not found.");
-        }
-        if (book.isIssued) {
-            System.out.println("Book '" + book.title + "' is already issued.");
-        } else {
-            book.isIssued = true;
-            System.out.println("Book '" + book.title + "' issued successfully.");
-        }
-    }
-
-    public synchronized void returnBook(int bookId) throws BookNotFoundException {
-        Book book = books.get(bookId);
-        if (book == null) {
-            throw new BookNotFoundException("Book with ID " + bookId + " not found.");
-        }
-        if (!book.isIssued) {
-            System.out.println("Book '" + book.title + "' was not issued.");
-        } else {
-            book.isIssued = false;
-            System.out.println("Book '" + book.title + "' returned successfully.");
-        }
-    }
-}
-
-class LibraryTask implements Runnable {
-    private final Library library;
-    private final int bookId;
-    private final boolean issue;
-
-    public LibraryTask(Library library, int bookId, boolean issue) {
-        this.library = library;
-        this.bookId = bookId;
-        this.issue = issue;
-    }
-
-    @Override
-    public void run() {
-        try {
-            if (issue) {
-                library.issueBook(bookId);
-            } else {
-                library.returnBook(bookId);
-            }
-        } catch (BookNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-}
-
-public class LibraryManagementSystem {
-    public static void main(String[] args) {
-        Library library = new Library();
-
-        Thread t1 = new Thread(new LibraryTask(library, 1, true));
-        Thread t2 = new Thread(new LibraryTask(library, 1, false));
-        Thread t3 = new Thread(new LibraryTask(library, 2, true));
-        Thread t4 = new Thread(new LibraryTask(library, 4, true));
-
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-
-        try {
-            t1.join();
-            t2.join();
-            t3.join();
-            t4.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Library operations completed.");
-    }
-}
+Overall, this Library Management System serves as a practical example of how exception handling and multithreading can be combined to create a reliable, user-friendly, and efficient application. It is ideal for students and developers looking to understand and implement these concepts in real-world scenarios.
