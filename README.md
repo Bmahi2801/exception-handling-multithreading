@@ -1,5 +1,3 @@
-About Library Management System with Exception Handling and Multithreading in JAVA
-
 The Library Management System is a console-based Java application designed to handle essential library functions such as issuing and returning books. This project focuses on implementing two key programming concepts: exception handling and multithreading. By integrating these features, the system ensures smooth and reliable operations even when multiple users access it concurrently.
 
 Exception handling in this system plays a critical role in managing invalid operations. For example, if a user attempts to issue a book that does not exist in the library or tries to return a book that was never issued, the program raises custom exceptions with clear, user-friendly error messages. This approach not only improves the system’s robustness but also enhances the user experience by preventing unexpected crashes.
